@@ -1,0 +1,195 @@
+import mysql.connector
+import time
+import datetime
+print("**************************************************************************************")
+print("                             welcome to covid report                                  ") 
+time.sleep(2)
+"""mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+)
+mycursor=mydb.cursor()
+mycursor.execute("create table cov6 (date date, today_case int, total_case int, today_recovery int, total_recovery int, today_death int, total_death int, vacc_count int)")
+print("successfully table  created")"""
+def user_value():
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    sql="insert into cov6(date,today_case,total_case,today_recovery,total_recovery,today_death,total_death,vacc_count) values (%s,%s,%s,%s,%s,%s,%s,%s)"
+    time.sleep(2)
+    print("enter the date in (yyyy:mm:dd) this order")
+    date=input(datetime.date)
+    time.sleep(2)
+    today_case=int(input("enter your today case:"))
+    time.sleep(2)
+    total_case=int(input("enter total case:"))
+    time.sleep(2)
+    today_recovery=int(input("enter today recovery:"))
+    time.sleep(2)
+    total_recovery=int(input("enter total recovery:"))
+    time.sleep(2)
+    today_death=int(input("enter today death case:"))
+    time.sleep(2)
+    total_death=int(input("enter total death case:"))
+    time.sleep(2)
+    vacc_count=int(input("enter the vaccination number:"))
+    val=(date,today_case,total_case,today_recovery,total_recovery,today_death,total_death,vacc_count)
+    mycursor.execute(sql,val)
+    mydb.commit()
+    time.sleep(2)
+    print("successfully data inserted")
+    time.sleep(2)
+def user_view():
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("select * from cov6 where date='%s'"%(user_dt)) 
+    result=mycursor.fetchone()
+    if mycursor.rowcount==1:
+        print("date,today_case,total_case,today_recovery,total_recovery,today_death,total_death,vacc_count")
+        print(result)
+    else:
+        print("invalid date please enter correct date")
+def update():
+    user_dt=input(datetime.date)
+    time.sleep(2)
+    print("To update today case press 1")
+    time.sleep(2)
+    print("To update total case press 2")
+    time.sleep(2)
+    print("To update today recovery press 3")
+    time.sleep(2)
+    print("To update total recovery press 4")
+    time.sleep(2)
+    print("To update today death press 5")
+    time.sleep(2)
+    print("To update total death press 6")
+    time.sleep(2)
+    print("To update vaccination press 7")
+    time.sleep(2)
+    user_new=input("enter the choice:")
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("select * from welcome_db.cov6 where date='%s'"% (user_dt)) #and mycursor.execute("select * from user_data3 where MOBILE_NO=%s"%(user_number))
+    col = mycursor.fetchone()
+    if mycursor.rowcount==1:
+        x=list(col)
+        for i in x:
+            j=(str(i))
+        if user_new=="1":
+            u_tdcs=int(input("enter the updated today case:"))
+            time.sleep(2)
+            print("your process is updating")
+            time.sleep(2)
+            mycursor.execute("UPDATE welcome_db.cov6 SET today_case=%s WHERE date='%s'"%(u_tdcs, user_dt))
+            mydb.commit()
+            print("data is successfully updated")
+        elif user_new=="2":
+            u_tocs=int(input("enter the updated total case:"))
+            time.sleep(2)
+            print("your process is updating")
+            time.sleep(2)
+            mycursor.execute("UPDATE welcome_db.cov6 SET total_case=%s WHERE date='%s'"%(u_tocs, user_dt))
+            mydb.commit()
+            print("data is successfully updated")
+        elif user_new=="3":
+            u_tdre=int(input("enter the updated today recovery case:"))
+            time.sleep(2)
+            print("your process is updating")
+            time.sleep(2)
+            mycursor.execute("UPDATE welcome_db.cov6 SET today_recovery=%s WHERE date='%s'"%(u_tdre, user_dt))
+            mydb.commit()
+            print("data is successfully updated")
+        elif user_new=="4":
+            u_tore=int(input("enter the updated total recovery case:"))
+            time.sleep(2)
+            print("your process is updating")
+            time.sleep(2)
+            mycursor.execute("UPDATE welcome_db.cov6 SET total_recovery=%s WHERE date='%s'"%(u_tore, user_dt))
+            mydb.commit()
+            print("data is successfully updated")
+        elif user_new=="5":
+            u_tdd=int(input("enter the updated today death case:"))
+            time.sleep(2)
+            print("your process is updating")
+            time.sleep(2)
+            mycursor.execute("UPDATE welcome_db.cov6 SET today_death=%s WHERE date='%s'"%(u_tdd, user_dt))
+            mydb.commit()
+            print("data is successfully updated")
+        elif user_new=="6":
+            u_tod=int(input("enter the updated total death case:"))
+            time.sleep(2)
+            print("your process is updating")
+            time.sleep(2)
+            mycursor.execute("UPDATE welcome_db.cov6 SET total_death=%s WHERE date='%s'"%(u_tod, user_dt))
+            mydb.commit()
+            print("data is successfully updated")
+        elif user_new=="7":
+            u_vac=int(input("enter the updated vaccination report:"))
+            time.sleep(2)
+            print("your process is updating")
+            time.sleep(2)
+            mycursor.execute("UPDATE welcome_db.cov6 SET vacc_count=%s WHERE date='%s'"%(u_vac, user_dt))
+            mydb.commit()
+            print("data is successfully updated")
+        else:
+            print("invalid")
+    else:
+        print("enter the correct date")
+def delete():
+    print("please enter the correct date to delete the record ")
+    user_dt=input(datetime.date)
+    time.sleep(2)
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("delete from cov6 where date='%s'"% (user_dt))
+    mydb.commit()
+    print("your record successfully deleted")
+print("you want see covid report please follow the setps given below")
+time.sleep(2)
+print(" enter the new report press 1")
+time.sleep(2)
+print("view the report press 2")
+time.sleep(2)
+print("update the old report press 3")
+time.sleep(2)
+print("To delete record  press 4")
+time.sleep(2)
+print("exit press 5")
+user_val=input("enter the value:")
+if user_val=="1":
+    user_value()
+elif user_val=="2":
+    print("enter the date in (yyyy:mm:dd) this order")
+    user_dt=input(datetime.date)
+    user_view()
+elif user_val=="3":
+    update()
+elif user_val=="4":
+    delete()
+elif user_val=="5":
+    print("thanks for visiting our site")
+else:
+    print("invalid choice")
+print("thank you for visiting our site")
+print("*********************************************************************************")

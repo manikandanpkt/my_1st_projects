@@ -1,0 +1,152 @@
+import mysql.connector
+import time
+print("***************************************************************")
+print(".......................welcome to ATM..........................")
+time.sleep(5)
+'''def table():
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("create table user_data3 (name varchar(20), PIN_NO int(4), MOBILE_NO varchar(12), BALANCE int)")
+    print("successfully table  created")'''
+def user_value():
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    sql="insert into User_data3(name,PIN_NO,MOBILE_NO,BALANCE) values (%s,%s,%s,%s)"
+    name=input("enter your name:")
+    time.sleep(2)
+    PIN_NO=int(input("enter PIN_NO:"))
+    time.sleep(2)
+    MOBILE_NO=int(input("enter MOBILE_NO:"))
+    time.sleep(2)
+    BALANCE=int(input("enter BALANCE amount:"))
+    time.sleep(2)
+    val=(name,PIN_NO,MOBILE_NO,BALANCE)
+    mycursor.execute(sql,val)
+    mydb.commit()
+    print("your pin is being generated")
+    time.sleep(5)
+    print("your pin has been generated successfully")
+    print("if you want to deposit or withdraw cash please insert your card")
+    print("thank you")
+def user_view():
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("select BALANCE from user_data3 where PIN_NO=%s"%(user_pin)) 
+    result=mycursor.fetchone()
+    if mycursor.rowcount==1:
+        print("please wait your detail is processed")
+        time.sleep(5)
+        print(f"your account balance is:{result} ")
+    else:
+        print("invalid pin number")
+def user_withdraw():
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("select BALANCE from welcome_db.user_data3 WHERE PIN_NO=%s"% (user_pin)) #and mycursor.execute("select * from user_data3 where MOBILE_NO=%s"%(user_number))
+    col = mycursor.fetchone()
+    #w_a=int(input("enter the amount:"))
+    x=list(col)
+    for i in x:
+        j=(int(i))
+        if j>=w_a:
+            am=j-w_a
+            print("your transaction is processed")
+            mycursor.execute("UPDATE welcome_db.user_data3 SET BALANCE ='%s' WHERE PIN_NO ='%s'"%(am, user_pin))
+            mydb.commit()
+            print("your withdraw process successfully completed")
+            time.sleep(2)
+            print(f"take a cash{w_a}")
+        else:
+            print("invalid cash")
+def user_deposite():
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("select BALANCE from welcome_db.user_data3 where PIN_NO=%s"% (user_pin)) #and mycursor.execute("select * from user_data3 where MOBILE_NO=%s"%(user_number))
+    col = mycursor.fetchone()
+    #w_a=int(input("enter the amount:"))
+    x=list(col)
+    for i in x:
+        j=(int(i))
+        am=j+w_a
+        mycursor.execute("UPDATE welcome_db.user_data3 SET BALANCE=%s WHERE PIN_NO='%s'"%(am, user_pin))
+        mydb.commit()
+        print("please wait while your transaction is processed ")
+        time.sleep(3)
+        print(f"your {w_a} is deposite successfully")
+
+card=input("please insert your card  and press 1:" )
+time.sleep(2)
+if card=="1":
+    print("please wait your card is being processed")
+    time.sleep(4)
+    print("pin generation press 1")
+    time.sleep(2)
+    print("view balance press 2")
+    time.sleep(2)
+    print("withdraw amount press 3")
+    time.sleep(2)
+    print("deposite press 4")
+    time.sleep(2)
+    print("cancel press 5")
+    time.sleep(2)
+    user_input=input("please enter the number:")
+    try:
+        if user_input=="1":
+            print("please follow the given instruction to create or generate a pin ")
+            user_value()
+        elif user_input=="2":
+            user_pin=input("enter your pin number:")
+            user_view()
+        elif user_input=="3":
+            user_pin=input("enter your pin number:")
+            w_a=int(input("enter the amount:"))
+            time.sleep(2)
+            user_withdraw()
+        elif user_input=="4":
+            user_pin=input("enter your pin number:")
+            w_a=int(input("enter the amount:"))
+            time.sleep(2)
+            user_deposite()
+        elif user_input=="5":
+            print("your transancation is cancled")
+            time.sleep(2)
+        else:
+            print("invalid value")
+            print("press correct value")        
+    except ValueError:
+        print("invalid type")
+        print("give corect data type")
+else:
+    print("sorry your card has not been inserted")
+    print("insert your card and enter press 1 ")
+print("please take your card")
+time.sleep(3)
+print("thank you for visiting our ATM")
+print("***************************************************************")
+print("---------------------------------------------------------------")
+print("***************************************************************")

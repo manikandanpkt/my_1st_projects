@@ -1,0 +1,207 @@
+import mysql.connector
+import time
+import datetime
+print("*****************************************************")
+"""mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+)
+mycursor=mydb.cursor()
+mycursor.execute("create table otb11(num int primary key, b_date date, t_date date, name varchar(20), age int(3), gender varchar(20), stdt_place varchar(50), t_fair int, p_number varchar(12))")
+print("success")"""
+print("            welcome SRM bus service        ")
+time.sleep(2)
+print("         fast and safe journey        ")
+time.sleep(2)
+print("        available bus routes are given below        ")
+route=['chennai to trichy','trichy to chennai','chennai to madurai','madurai to chennai','chennai to nellai','nellai to chennai','chennai to kovai','kovai to chennai']
+for x in route:
+    time.sleep(2)
+    print(x)
+print("ticket booking press 1")
+time.sleep(2)
+print("ticket view press 2")
+time.sleep(2)
+time.sleep(2)
+print("update your booking 3")
+time.sleep(2)
+print("cancle your booking press 4")
+time.sleep(2)
+print("exit press 5")
+def booking():
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    sql="insert into otb11(num,b_date,t_date,name,age,gender,stdt_place,t_fair,p_number) values (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    print("the number is primary")
+    time.sleep(2)
+    num=int(input("enter the 5 digit number"))
+    time.sleep(2)
+    b_date=datetime.date.today()
+    print("enter the travelling date time in yyyy-mm-dd formate")
+    time.sleep(2)
+    t_date=input(datetime.date)
+    time.sleep(2)
+    name=input("enter the passanger name:").lower()
+    time.sleep(2)
+    age=int(input("enter the passanger age:"))
+    time.sleep(2)
+    gender=input("enter passanger gender(male,female,transgender):").lower()
+    time.sleep(2)
+    print("starting and destinatio place is  enter following order like(chennai to madurai")
+    time.sleep(2)
+    stdt_place=input("enter passanger starting and destination place: ").lower()
+    time.sleep(2)
+    p_number=input("enter the passanger number:")
+    time.sleep(2)
+    if stdt_place=="chennai to madurai" or stdt_place=="madurai to chennai":
+        t_fair=700
+    elif stdt_place=="chennai to trichy" or stdt_place=="trichy to chennai":
+        t_fair=400
+    elif stdt_place=="chennai to nellai" or stdt_place=="nellai to chennai":
+        t_fair=1000
+    elif stdt_place=="chennai to kovai" or stdt_place=="kovai to chennai":
+        t_fair=750
+    val=(num,b_date,t_date,name,age,gender,stdt_place,t_fair,p_number)
+    mycursor.execute(sql,val)
+    mydb.commit()
+    print("your ticket is successfully booked")
+def user_view():
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("select * from otb11 where num='%s'"%(user_num)) 
+    result=mycursor.fetchone()
+    if mycursor.rowcount==1:
+        print("your data is given below")
+        print("num,booking date,travel date,name,age,gender,start and destination place,travel fair,passanger number")
+        for x in result:
+            print(x)
+            time.sleep(2)
+    else:
+        print("invalid")
+def update():
+    user_dt=int(input(" to update your data please enter the primary number:"))
+    time.sleep(2)
+    
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("select * from welcome_db.otb11 where num='%s'"% (user_dt)) #and mycursor.execute("select * from user_data3 where MOBILE_NO=%s"%(user_number))
+    col = mycursor.fetchone()
+    if mycursor.rowcount==1:
+        user_new=input("enter the choice:")
+        time.sleep(2)
+        if user_new=="1":
+            print("update the travelling date date(yyyy-mm-dd)")
+            t_date1=input(datetime.date)
+            mycursor.execute("UPDATE welcome_db.otb11 SET t_date='%s' WHERE num='%s'"% (t_date1, user_dt))
+            mydb.commit()
+            print("completed")
+        elif user_new=="2":
+            name1=input("enter passanger correct name:")
+            mycursor.execute("UPDATE welcome_db.otb11 SET name='%s' WHERE num='%s'"% (name1, user_dt))
+            mydb.commit()
+            print("complete")
+        elif user_new=="3":
+            age1=int(input("enter correct age of passanger:"))
+            mycursor.execute("UPDATE welcome_db.otb11 SET age='%s' WHERE num='%s'"% (age1, user_dt))
+            mydb.commit()
+            print("complete")
+        elif user_new=="4":
+            print("available routes are in given in above")
+            time.sleep(2)
+            stdt_place1=input("enter the correct travelling place:").lower()
+            time.sleep(2)
+            mycursor.execute("UPDATE welcome_db.otb11 SET stdt_place='%s' WHERE num='%s'"% (stdt_place1, user_dt))
+            mydb.commit()
+            if stdt_place1=="chennai to madurai" or stdt_place1=="madurai to chennai":
+                t_fair1=700
+                mycursor.execute("UPDATE welcome_db.otb11 SET t_fair='%s'"% (t_fair1))
+                mydb.commit()
+                print("your place and fair is successfully updated")
+            elif stdt_place1=="chennai to trichy" or stdt_place1=="trichy to chennai":
+                t_fair1=400
+                mycursor.execute("UPDATE welcome_db.otb11 SET t_fair='%s'"% (t_fair1))
+                mydb.commit()
+                print("your place and fair is successfully updated")
+            elif stdt_place1=="chennai to nellai" or stdt_place1=="nellai to chennai":
+                t_fair1=1000
+                mycursor.execute("UPDATE welcome_db.otb11 SET t_fair='%s'"% (t_fair1))
+                mydb.commit()
+                print("your place and fair is successfully updated")
+            elif stdt_place1=="chennai to kovai" or stdt_place1=="kovai to chennai":
+                t_fair1=750
+                mycursor.execute("UPDATE welcome_db.otb11 SET t_fair='%s'"% (t_fair1))
+                mydb.commit()
+                print("your place and fair is successfully updated")
+        elif user_new=="5":
+            p_number1=int(input("update the passanger number:"))
+            mycursor.execute("UPDATE welcome_db.otb11 SET p_number=%s WHERE num='%s'"% (p_number1, user_dt))
+            mydb.commit()
+            print("your mobile number successfully updated")
+        elif user_new=="6":
+            gender1=input("update the passanger gender:")
+            mycursor.execute("UPDATE welcome_db.otb11 SET gender=%s WHERE num='%s'"% (gender1, user_dt))
+            mydb.commit()
+            print("your gender successfully updated")
+        else:
+            print("invalid values")
+    else:
+        print("invalid number")
+def delete():
+    user_num=int(input(" To cancle a ticket please enter the primary number:"))
+    mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="M@ni3112",
+    database="welcome_db"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("delete from otb11 where num='%s'"% (user_num))
+    mydb.commit()
+    print("the ticket is successfully cancled")
+customer_choice=input("enter your choice:")
+time.sleep(2)
+if customer_choice=="1":
+    print("only one ticket is booking in a single time so press 1")
+    member_count=int( input("enter how many passanger you are booking:" ))
+    time.sleep(2)
+    if member_count==1:
+      booking()
+    else:
+        print("only one ticket booking in single time")
+elif customer_choice=="2":
+    print("enter your primary number given below")
+    user_num=int(input("enter the number:"))
+    user_view()
+elif customer_choice=="3":
+    update()
+elif customer_choice=="4":
+    dec=input("Are you sure to cancle your ticker(press yes or no):").lower()
+    if dec=="yes":
+        delete()
+        print("your ticket is cancled successfully")
+    else:
+        print("enjoy your journey")
+elif customer_choice=="5":
+    print("thank you for visiting our travel website")
+else:
+    print("invalid choice")
+    print("please enter correct choice")
+print("        thank you for visiting our travels       ")
+print("****************************************************************************")
